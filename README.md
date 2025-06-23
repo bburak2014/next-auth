@@ -190,8 +190,8 @@ logError(error, "payment-processing");
 
 ### Development
 ```bash
-docker build -t next-auth .
-docker run -p 3000:3000 --env-file .env next-auth
+npm run docker:build
+npm run docker:run
 ```
 
 ### Docker Compose
@@ -202,10 +202,10 @@ docker-compose up -d
 ### Production
 ```bash
 # Production build
-docker build -t next-auth:prod .
+npm run docker:build
 
 # Run with production env
-docker run -p 3000:3000 --env-file .env.production next-auth:prod
+npm run docker:run
 ```
 
 ## 🔧 Available Scripts
@@ -219,7 +219,6 @@ npm run start            # Start production server
 # Code Quality
 npm run lint             # Run ESLint
 npm run lint:fix         # Fix ESLint errors
-npm run type-check       # TypeScript type checking
 npm run pre-commit       # Run linting and type checking
 
 # Docker
@@ -270,8 +269,8 @@ npm run analyze          # Bundle analyzer
 ## 🧪 Testing
 
 ```bash
-# Type checking
-npm run type-check
+# Test checking
+npm run test
 
 # Linting
 npm run lint
@@ -299,41 +298,12 @@ npm run build
 
 Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakın.
 
-## 🐛 Bilinen Sorunlar ve Çözümler
-
-### Auth0 Login Redirect Problemi
-```javascript
-// Solution: Ensure callback URL is correctly configured
-NEXTAUTH_URL=https://yourdomain.com (production'da trailing slash olmadan)
-```
-
-### Docker Build Hatası
-```bash
-# Solution: Clear Docker cache
-docker system prune -a
-docker build --no-cache -t next-auth .
-```
-
-### Rate Limiting Bypass (Development)
-```javascript
-// middleware.ts içinde development için disable edin
-const MAX_REQUESTS = process.env.NODE_ENV === 'development' ? 1000 : 60;
-```
-
+ 
 ## 📞 Destek
 
 - **Issues**: [GitHub Issues](https://github.com/bburak2014/next-auth/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/bburak2014/next-auth/discussions)
-- **Email**: your-email@domain.com
+- **Email**: burakbilici2014@gmail.com
 
-## 🙏 Teşekkürler
 
-- [Next.js](https://nextjs.org/) - React framework
-- [Auth0](https://auth0.com/) - Identity platform
-- [NextAuth.js](https://next-auth.js.org/) - Authentication library
-- [TailwindCSS](https://tailwindcss.com/) - CSS framework
-- [Pino](https://getpino.io/) - Logging library
-
----
 
 **⭐ Bu projeyi beğendiyseniz star vermeyi unutmayın!**
