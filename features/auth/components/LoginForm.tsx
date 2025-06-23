@@ -11,7 +11,7 @@ export default function LoginForm() {
         <h1 className="text-2xl font-semibold text-center mb-6">Giriş Yap</h1>
         <button
           onClick={() => login()}
-          className="w-full py-2 mb-4 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+          className="w-full py-2 mb-4 bg-blue-600 text-white rounded hover:bg-blue-700 transition cursor-pointer"
         >
           Auth0 ile Giriş Yap
         </button>

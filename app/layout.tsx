@@ -4,13 +4,14 @@ import { ReactNode } from "react"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/features/auth/authOptions"
 import { Providers } from "./provider"
+import Navbar from "@/features/home/components/Navbar"
+import Footer from "@/features/home/components/Footer"
 
 interface RootLayoutProps {
   children: ReactNode
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  // Sunucu tarafında oturum bilgisini al
   const session = await getServerSession(authOptions)
 
   return (
@@ -19,9 +20,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <title>My Next.js App</title>
       </head>
       <body>
-        {/* Oturum bilgisini Providers'a ilet */}
         <Providers session={session}>
+          <Navbar session={session} />
           {children}
+          <Footer />
         </Providers>
       </body>
     </html>
