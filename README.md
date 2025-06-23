@@ -269,8 +269,6 @@ npm run analyze          # Bundle analyzer
 ## 🧪 Testing
 
 ```bash
-# Test checking
-npm run test
 
 # Linting
 npm run lint
