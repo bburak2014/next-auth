@@ -7,10 +7,10 @@ import { logApiCall, logSecurityEvent, logError } from "@/utils/logger";
 const CONFIG = {
   SECRET: process.env.NEXTAUTH_SECRET!,
   RATE_LIMIT: {
-    WINDOW_SIZE_MS: 60 * 1000, // 1 minute
+    WINDOW_SIZE_MS: 60 * 1000,
     MAX_REQUESTS: 60,
-    CLEANUP_INTERVAL: 1 * 60 * 1000, // 1 minute
-    ENTRY_TTL: 5 * 60 * 1000, // 5 minutes
+    CLEANUP_INTERVAL: 1 * 60 * 1000,
+    ENTRY_TTL: 5 * 60 * 1000, 
     MAX_STORE_SIZE: 10000,
   },
   PUBLIC_PATHS: ["/", "/login", "/unauthorized"],
@@ -22,9 +22,8 @@ const CONFIG = {
     "next-auth.callback-url",
     "__Secure-next-auth.callback-url",
   ],
-} as const;
+} ;
 
-// Rate limiting store
 class RateLimitStore {
   private store = new Map<string, { count: number; firstRequestTime: number }>();
   private lastCleanup = Date.now();
@@ -51,7 +50,6 @@ class RateLimitStore {
   checkRateLimit(ip: string): boolean {
     const now = Date.now();
 
-    // Periodic cleanup
     if (now - this.lastCleanup > CONFIG.RATE_LIMIT.CLEANUP_INTERVAL) {
       this.cleanup();
       this.lastCleanup = now;
@@ -78,7 +76,6 @@ class RateLimitStore {
   }
 }
 
-// Authentication service
 class AuthenticationService {
   static async validateToken(request: NextRequest): Promise<JWT | null> {
     try {
@@ -106,7 +103,6 @@ class AuthenticationService {
   }
 }
 
-// Cookie management service
 class CookieService {
   static clearSessionCookies(request: NextRequest, response: NextResponse): NextResponse {
     const sessionCookies = request.cookies
@@ -144,13 +140,11 @@ class CookieService {
   }
 }
 
-// Main middleware function
 export async function middleware(request: NextRequest) {
   const startTime = Date.now();
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   const pathname = request.nextUrl.pathname;
 
-  // Rate limiting
   const rateLimitStore = new RateLimitStore();
   if (!rateLimitStore.checkRateLimit(ip)) {
     logSecurityEvent("rate_limit_exceeded", {
@@ -161,12 +155,10 @@ export async function middleware(request: NextRequest) {
     return new NextResponse("Too Many Requests", { status: 429 });
   }
 
-  // Public path check
   if (AuthenticationService.isPublicPath(pathname)) {
     return NextResponse.next();
   }
 
-  // Authentication
   const token = await AuthenticationService.validateToken(request);
   
   if (!token) {
@@ -178,7 +170,6 @@ export async function middleware(request: NextRequest) {
     return redirectToLogin(request, pathname);
   }
 
-  // Authorization
   if (!AuthenticationService.hasAdminAccess(token, pathname)) {
     logSecurityEvent("admin_access_denied", {
       ip,
@@ -189,10 +180,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/unauthorized", request.url));
   }
 
-  // Response
   const response = NextResponse.next();
 
-  // API logging
   if (pathname.startsWith("/api")) {
     const duration = Date.now() - startTime;
     logApiCall({
