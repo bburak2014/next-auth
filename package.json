@@ -1,0 +1,72 @@
+{
+  "name": "next-test",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Next.js Auth0 OAuth + JWT Authentication System",
+  "keywords": [
+    "next.js",
+    "auth0",
+    "oauth",
+    "jwt",
+    "authentication"
+  ],
+  "author": "Burak Bilici",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bburak2014/next-test.git"
+  },
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "pre-commit": "npm run lint && npm run type-check",
+    "clean": "rm -rf .next out",
+    "analyze": "ANALYZE=true npm run build",
+    "docker:build": "docker build -t next-auth .",
+    "docker:run": "docker run -p 3000:3000 next-auth",
+    "docker:compose": "docker-compose up -d",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "jwt-decode": "^4.0.0",
+    "next": "15.3.3",
+    "next-auth": "^4.24.11",
+    "pino": "^9.7.0",
+    "pino-pretty": "^13.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@next/bundle-analyzer": "^15.3.3",
+    "@tailwindcss/postcss": "^4",
+    "@types/next-auth": "^3.13.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.0.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=18.17.0",
+    "npm": ">=9.0.0"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "**/*.{json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}
